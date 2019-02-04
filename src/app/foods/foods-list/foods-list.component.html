@@ -1,0 +1,149 @@
+<div *ngIf="showInter" style="padding : 10px">
+    <mat-card class="biG">
+      <mat-card-content  color="primary">
+        <h2 class="example-h2">رزرو غذا</h2>
+
+        <p>
+          قابل توجه دانشجویان رزرو صبحانه فقط برای خوابگاه های علم الهدی و خوابگاه دختران اطهر میباشد
+          در صورت رزرو داشجویانی که در این خوابگاه ها حضور ندارند  غذایی به آنها تحویل نخواهد شد
+        </p>
+     <h4>
+          <span *ngIf="my.cost">
+          موجودی شما :
+          {{my.cost}} ریال
+        </span>
+      <br>    <br>
+         <button style="margin-top:5px" mat-stroked-button (click)="openDialog()" style="margin:2px">افزایش موجودی <i class="gb gb_add gb_s24"></i>
+  </button>
+  <button mat-stroked-button (click)="openTransferDialog()" style="margin:2px">انتقال اعتبار<i class="gb gb_remove gb_s24"></i></button>
+  <button mat-raised-button  style="margin:2px" disabled>رزرو همه  </button>
+
+
+  <p *ngIf="my.sum > 0">مجموع رزرو ها : {{my.sum}} ریال</p>
+        </h4>
+        <div class="width100">
+
+          <mat-form-field *ngIf="selfList" >
+            <mat-select  (selectionChange)="SetWeek()"  placeholder="سلف" [(ngModel)]="self">
+                <mat-option *ngFor="let self of selfList" [value]="self.ID">
+                  {{self.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+
+        </div>
+
+
+  <div *ngIf="Sche">
+      <mat-form-field class="rayput" *ngIf="days">
+      <mat-select placeholder="روز هفته" [(ngModel)]="SelectedDow">
+          <mat-option *ngFor="let item of days;let id = index" [value]="id">
+            {{item}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+            <div  >
+              <div  class="grid day-foods-list">
+
+
+                <div  *ngFor="let item of ListOfFood(SelectedDow); let feed = index" class="col-3 animated bounceIn">
+                  <mat-card class="cardi mat-elevation-z6">
+                    <mat-card-header>
+                      <mat-card-title *ngIf="FindFoodByID(item.food)">
+                         <b>{{FindFoodByID(item.food).name}} </b>
+                      </mat-card-title>
+                      <mat-card-subtitle *ngIf="firstDw">
+                        {{DayWeekPlusPlus(firstDw.y,firstDw.m,firstDw.d, SelectedDow*1).format("jYYYY/jM/jD")}}
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+
+                      <div class="btns " >
+
+                        <button *ngIf="!checkBook(item,SelectedDow,ft.w)" class="rayput" (click) = "book(item,SelectedDow,ft.w,true,FindPriceByMethod(item.food,FindMealByID(item.meal)),DayWeekPlusPlus(firstDw.y,firstDw.m,firstDw.d, SelectedDow*1).unix() - GetUnixTime())" mat-raised-button color="primary">
+                          رزرو
+                        </button>
+                        <button *ngIf="checkBook(item,SelectedDow,ft.w,false)" (click) = "book(item,SelectedDow,ft.w,false,FindPriceByMethod(item.food,FindMealByID(item.meal)),DayWeekPlusPlus(firstDw.y,firstDw.m,firstDw.d, SelectedDow*1).unix() - GetUnixTime())" class="rayput verify"  mat-raised-button color="primary">
+<mat-icon>done</mat-icon>
+                        </button>
+                      </div>
+                      <span *ngIf="!checkBook(item,SelectedDow,ft.w)">
+                        <mat-form-field class="rayput" style="margin-top:8px" *ngIf="item.meal  === '5bddb2bca2de2d2d4d829431'">
+                          <mat-select    placeholder="محل تحویل غذا" [(ngModel)]="item.place">
+
+                              <mat-option *ngFor="let self of DeliverPlace" [value]="self.ID" >
+                                {{self.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                      </span>
+
+
+
+                    </mat-card-content>
+                                        <mat-card-actions >
+
+      <div style="padding-right:15px">
+        <mat-chip-list>
+          <span           *ngIf="FindMealByID(item.meal)">
+            <mat-chip   color="accent">    {{FindMealByID(item.meal).name}} </mat-chip>
+
+          </span>
+
+          <mat-chip color="primary" selected> {{FindPriceByMethod(item.food,FindMealByID(item.meal))}}  ریال </mat-chip>
+          <button (click)="favobutton(item.food,true)" *ngIf="!checkfav(item.food)" mat-icon-button >
+<mat-icon>favorite</mat-icon>
+      </button>
+
+      <button (click)="favobutton(item.food,false)" mat-icon-button *ngIf="checkfav(item.food)" color="warn">
+        <mat-icon>favorite</mat-icon>
+
+  </button>
+
+  <button mat-icon-button (click)="openSellDialog(item)"  color="accent">
+    <mat-icon>  local_grocery_store    </mat-icon>
+
+</button>
+
+        </mat-chip-list>
+
+      </div>
+                     </mat-card-actions>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+
+      </div>
+
+
+        <div *ngIf="!Sche">
+          <br>
+            <mat-progress-bar color="accent" *ngIf="loadmessage=='loading'" mode="buffer" value="70" buffervalue="30"></mat-progress-bar>
+
+            <p *ngIf="loadmessage=='notfound'">برای این هفته هیچ برنامه غذایی تعریف نشده است</p>
+        </div>
+        <div *ngIf="selfList">
+            <mat-slider (change)="SetWeek()" class="rayput"     [displayWith]="formatLabel" [tickInterval]="1" [thumbLabel]="true" min="1" max="52" step="1" [(ngModel)]="weekNum"></mat-slider>
+            <br>
+            <button mat-button (click)="SetWeek('previous')">هفته قبلی</button>
+            <button mat-button (click)="SetWeek('current')">هفته جاری</button>
+            <button mat-button (click)="SetWeek('next')">هفته بعدی</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+  <div *ngIf="!showInter" style="padding : 40px">
+    <mat-card>
+      <i class="gb gb_warning gb_s48 " style="color:red"></i>
+      <b> {{errMsg}}</b>
+
+
+
+      <br>
+      <small style="font-size:9px">سامانه نرم افزاری ابری رایدا </small>
+      </mat-card>
+  </div>

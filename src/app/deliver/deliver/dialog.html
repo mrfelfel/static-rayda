@@ -1,0 +1,11 @@
+
+<div mat-dialog-content>
+  <p> تحویل غذای آزاد </p>
+  <mat-form-field class="rayput">
+      <input placeholder="کد ملی" pattern="[^0][0-9]{3,}"  matInput [(ngModel)]="data.national">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="warn" (click)="onNoClick()">بستن</button>
+  <button mat-raised-button [mat-dialog-close]="data" cdkFocusInitial >تحویل</button>
+</div>

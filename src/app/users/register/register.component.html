@@ -1,0 +1,84 @@
+<div class="login-container">
+    <mat-card class="login">
+  <mat-card-content>
+    <div class="auth-content no-select" *ngIf="UserLevel == 0">
+      <p>عضویت در سامانه</p>
+     <mat-form-field>
+      <input type="string"   [(ngModel)]="userNationalcode" name= "userNationalcode" matInput placeholder="کد ملی" (keyup)="checkInput()">
+    </mat-form-field>
+        <mat-form-field class="rayput" style="margin-top:8px" >
+            <mat-select    placeholder="نوع حساب" >
+
+                <mat-option *ngFor="let utype of utypes" [value]="utype.ID" >
+                  {{utype.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+      <mat-form-field *ngIf="finded">
+       <input type="string" disabled  [(ngModel)]="uniin.name" name= "unin.name" matInput placeholder="دانشگاه">
+     </mat-form-field>
+     <mat-form-field *ngIf="finded">
+      <input type="string" [(ngModel)]="EmployeeNumber"  name="EmployeeNumber" matInput placeholder="شماره ی دانشجویی">
+    </mat-form-field>
+     <button *ngIf="level_one" mat-raised-button autocomplete="none" (click)="FindUser()" style="background:#4A148C" color="primary">بررسی و ادامه</button>
+      <span>
+        <br>
+        <b>{{err}}</b>
+      </span>
+    </div>
+    <div class="auth-content no-select" *ngIf="UserLevel == 1">
+      <p>عضویت در سامانه - تکمیل اطلاعات</p>
+      <mat-form-field>
+       <input type="string" disabled  [(ngModel)]="UserDetailsObject.Name" name= "UserDetailsObject.Name" matInput placeholder="نام" >
+     </mat-form-field>
+     <mat-form-field>
+      <input type="string" disabled  [(ngModel)]="UserDetailsObject.Family" name= "UserDetailsObject.Family" matInput placeholder="نام خانوادگی" >
+    </mat-form-field>
+      <mat-form-field>
+       <input type="string"   [(ngModel)]="UserDetailsObject.MobileNum" name= "UserDetailsObject.MobileNum" matInput placeholder="تلفن همراه" >
+     </mat-form-field>
+     <mat-form-field>
+      <input type="string"   [(ngModel)]="UserDetailsObject.BirthDate" name= "UserDetailsObject.BirthDate" matInput placeholder="تاریخ تولد" >
+    </mat-form-field>
+    <mat-form-field>
+     <input type="string"   [(ngModel)]="UserDetailsObject.Address_Home" name= "UserDetailsObject.Address_Home" matInput placeholder="ادرس منزل" >
+   </mat-form-field>
+   <mat-form-field>
+    <input type="string"   [(ngModel)]="UserDetailsObject.Sadere" name= "UserDetailsObject.Sadere" matInput placeholder="صادره" >
+  </mat-form-field>
+  <mat-form-field>
+   <input type="string"   [(ngModel)]="UserDetailsObject.BirthPlace" name= "UserDetailsObject.BirthPlace" matInput placeholder="محل تولد" >
+  </mat-form-field>
+
+
+  <button  mat-raised-button autocomplete="none" (click)="UserLevel = 2" color="primary" style="background:#4A148C">تکمیل اطلاعات و ادامه</button>
+    </div>
+    <div class="auth-content no-select" *ngIf="UserLevel == 2">
+      <p>عضویت در سامانه - اطلاعات احراز هویتی</p>
+
+      <mat-form-field>
+       <input type="password" [(ngModel)]="password" name="password" matInput placeholder="رمز عبور" >
+      </mat-form-field>
+
+          <mat-form-field>
+           <input type="password"  [(ngModel)]="rpassword" name="rpassword" matInput placeholder="تکرار کلمه عبور" >
+          </mat-form-field>
+      <button  mat-raised-button autocomplete="none" (click)="SubmitInformation()" color="primary">ساخت حساب</button>
+        <br>
+      {{err}}
+    </div>
+
+    <div class="auth-content no-select" *ngIf="UserLevel == 3">
+      <h1>تبریک</h1>
+      <p>به سامانه دانشگاهی رایدا خوش آمدید</p>
+
+       <h4>کلمه عبور : {{this.password}}</h4>
+
+       <a  mat-raised-button routerLink="/users/login" style="background:#4A148C" color="primary">ورود</a>
+    </div>
+
+  </mat-card-content>
+
+    </mat-card>
+  </div>
+  <p style="text-align:center; margin:0; padding:0; font-size:12px">کلیه حقوق برای عصر ارتباطات دهکده محفوظ است</p>

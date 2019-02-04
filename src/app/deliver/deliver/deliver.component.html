@@ -1,0 +1,74 @@
+
+<div style="padding : 10px">
+    <mat-card class="biG">
+        <mat-card-content>
+          <p>
+            لطفا توجه کنید که این یک میان افزار از رایداست در صورت عدم عملکرد صحیح
+            بر روی دکمه زیر کلیک کنید
+            <button mat-raised-button (click)="Getmicro()">به همگام سازی سریع با اخرین تغییرات</button>
+
+          </p>
+            <h3>
+               سیستم تحویل غذای رایدا </h3>
+               <div style="float:left; padding-left: 30px;">
+                <img *ngIf="code_meli" style="border-radius: 10px" src="https://api.rayda.ir/image?id={{code_meli}}" alt="عکس کاربر">
+              </div>
+              <mat-slide-toggle [(ngModel)]="foodDeliver">تحویل غذا</mat-slide-toggle>
+              <mat-slide-toggle   [(ngModel)]="viewSetting">تنظیمات</mat-slide-toggle>
+              <mat-slide-toggle   [(ngModel)]="MELI">خدمات ثبت کارت</mat-slide-toggle>
+  <button mat-icon-button style="float:left; margin-left: 50px" (click)="ExExport()">
+    <span class="xlsx-icon"></span>
+  </button>
+  <br>
+  <button mat-raised-button  type="reset" color="primary" (click)="GetReportsByDow()">بارگیری مجدد امار</button>
+  <button mat-raised-button  type="reset" color="primary" (click)="openBuyDialog()">تحویل غذای آزاد</button>
+
+         <br>
+         <h4>تحویل داده شده ها : {{Sum}}</h4>
+         <h4> آمار کل : {{All}}</h4>
+         <h4> باقی مانده : {{All - Sum}}</h4>
+
+  <div *ngIf="viewSetting" class="animated bounceInRight">
+      <mat-form-field  *ngIf="mealList" >
+          <mat-select  placeholder="وعده" (selectionChange)="GetReportsByDow()"  [(value)]="selectedMeal">
+            <mat-option *ngFor="let meal of mealList" [value]="meal.ID">
+              {{meal.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field   >
+            <mat-select (selectionChange)="GetReportsByDow()" [(value)]="SelectedDate.week" placeholder="هفته سال"  >
+              <mat-option *ngFor="let item of num | fill; let i = index"  [(value)]="i+Plus">
+                {{i+Plus}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field >
+              <mat-select (selectionChange)="GetReportsByDow()" [(value)]="SelectedDate.dow"  placeholder="روز هفته">
+                <mat-option *ngFor="let item of days; let i = index"  [(value)]="i">
+                  {{item}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  </div>
+  <form method="POST" (submit)="Deliver()" *ngIf="MELI">
+    <mat-form-field class="rayful" style="margin-top:5px">
+        <input matInput [(ngModel)]="code_meli" name="code_meli" type="text" placeholder="کد ملی" aria-label="Number" >
+      </mat-form-field>
+      <mat-form-field class="rayful" style="margin-top:5px">
+        <input matInput  [(ngModel)]="card_number" name="card_number" type="text" placeholder="شماره کارت" aria-label="Number" disabled >
+      </mat-form-field>
+    <button mat-raised-button *ngIf="foodDeliver" color="primary"   type="submit">تحویل</button>
+    <button mat-raised-button  type="reset" color="primary" (click)="DefineNewCard()">تعریف کارت</button>
+    <button mat-raised-button  type="reset" color="primary" (click)="RemoveCard()">حذف کارت</button>
+  </form>
+  <hr>
+  <h4>لیست غذا های تحویل گرفته شده</h4>
+  <mat-selection-list >
+      <mat-list-option *ngFor="let item of delivered"> {{item}} </mat-list-option>
+     </mat-selection-list>
+
+        </mat-card-content>
+
+    </mat-card>
+  </div>

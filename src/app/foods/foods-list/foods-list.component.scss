@@ -1,0 +1,67 @@
+.btns {
+  margin-bottom: 10px;
+}
+.btns button {
+  margin-left: 2px;
+}
+.btns .byelo {
+  background: #d50000;
+  color: #fff;
+}
+mat-card-actions {
+  width: 100%;
+}
+
+.mat-img {
+  height: 200px;
+  max-height: 200px;
+}
+.day-foods-list {
+
+}
+.lovedown {
+  background: #9E9E9E;
+}
+.verify {
+  background: #0E8746;
+}
+.box-food {
+  background: #fafafa;
+}
+.width100 > * {
+  margin-left: 5px;
+}
+.cardi {
+  width: 250px;
+  color: #000;
+  border-radius: 5px;
+  background: #F5F5F5;
+}
+.ray-tab-content {
+  // background: #D13438;
+}
+.mat-tab-label-content  {
+  background: !important #fff;
+}
+
+
+.grid {
+  padding: 0 !important;
+}
+.col-3 {
+  padding: 0;
+}
+@media (max-width : 320px) {
+  .cardi {
+    width: 200px;
+  }
+  .ray-tab-content {
+    padding: 0 !important;
+  }
+  .col-3 {
+    padding: 0 !important;
+    margin: 0 !important;
+
+  }
+}
+
